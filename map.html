@@ -389,6 +389,11 @@
     .footer-bottom { border-top: 1px solid #292524; padding-top: 20px; text-align: center; font-size: 14px; max-width: 1100px; margin-left: auto; margin-right: auto; display: block; }
     .footer-bottom p { color: #A8A29E; margin: 0; }
 
+    /* Desktop Socials extracted for cleaner code */
+    .footer-socials { display: flex; gap: 15px; margin-top: 20px; }
+    .footer-socials a { font-size: 20px; color: inherit; transition: 0.3s; background: transparent; }
+    .footer-socials a:hover { color: var(--orange); }
+
     /* ─── RESPONSIVE STYLES ─── */
     @media (max-width: 900px) {
       .desktop-only { display: none !important; }
@@ -426,11 +431,61 @@
       .filters { flex-wrap: wrap; justify-content: center; }
       .search-box { width: 100%; box-sizing: border-box; }
       
-      /* Footer Mobile Fixes */
-      .footer-grid { grid-template-columns: 1fr; text-align: center; }
-      .footer-logo { justify-content: center; }
-      .footer-social-links { justify-content: center !important; }
-      .footer-contact .fc-item { justify-content: center; text-align: center; flex-direction: column; align-items: center; }
+      /* --- Professional Mobile Footer Fixes --- */
+      footer {
+          padding: 40px 5% 20px !important;
+      }
+      .footer-grid {
+          grid-template-columns: 1fr !important;
+          gap: 25px !important;
+          margin-bottom: 20px !important;
+          width: 100%;
+          text-align: right;
+      }
+      .footer-grid > div {
+          padding-bottom: 25px;
+          border-bottom: 1px solid #292524;
+      }
+      .footer-grid > div:last-child {
+          border-bottom: none;
+          padding-bottom: 0;
+      }
+      .footer-logo {
+          justify-content: flex-start;
+      }
+      
+      /* Enhanced Touch-Friendly Social Icons */
+      .footer-socials {
+          margin-top: 25px;
+          gap: 12px;
+          justify-content: center;
+      }
+      .footer-socials a {
+          background: rgba(255, 255, 255, 0.08);
+          width: 44px;
+          height: 44px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 12px;
+          font-size: 18px;
+          color: var(--white);
+      }
+      .footer-socials a:hover {
+          background: var(--orange);
+          color: var(--white);
+      }
+      
+      .footer-contact .fc-item {
+          justify-content: flex-start;
+          flex-direction: row;
+          align-items: flex-start;
+      }
+      
+      .footer-bottom {
+          font-size: 13px !important;
+          padding-top: 20px !important;
+      }
     }
   </style>
 </head>
@@ -669,10 +724,10 @@
                 <img src="logo.png" alt="GivingHub Logo" style="width: 28px; height: 28px; margin-left: 8px;"> <span dir="ltr">GivingHub</span>
             </div>
             <p style="font-size: 14px; line-height: 1.8; margin-bottom: 20px;">مبادرة إنسانية مسجلة لدعم الطفولة في المغرب. نعمل على توفير الملبس والغذاء والتعليم لأطفال دور الرعاية.</p>
-            <div class="footer-social-links" style="display: flex; gap: 15px;">
-                <a href="#" style="font-size: 20px; color: #A8A29E;"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" style="font-size: 20px; color: #A8A29E;"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" style="font-size: 20px; color: #A8A29E;"><i class="fa-brands fa-twitter"></i></a>
+            <div class="footer-socials">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
             </div>
         </div>
         
