@@ -410,16 +410,53 @@
         .fc-item a { color: var(--orange-light); text-decoration: none; }
         .footer-bottom { border-top: 1px solid #292524; padding-top: 20px; text-align: center; font-size: 14px; }
 
+        /* Mobile Menu Button Styles */
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: var(--white); font-size: 28px; cursor: pointer; z-index: 1002; transition: 0.3s; }
+        nav.white-nav .mobile-menu-btn { color: var(--text-dark); }
+        .desktop-only { display: flex; }
+
+        /* Responsive Breakpoint */
         @media (max-width: 900px) {
-            .hero { flex-direction: column; text-align: center; padding-top: 120px; }
+            .desktop-only { display: none !important; }
+            .mobile-menu-btn { display: block; }
+            
+            /* The Sliding Burger Menu */
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%; /* Hidden off-screen by default */
+                width: 280px;
+                height: 100vh;
+                background: var(--white);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.4s ease;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+                margin: 0;
+                padding: 0;
+            }
+            .nav-links.active { right: 0; /* Slides in when active */ }
+            .nav-links a { color: var(--text-dark) !important; font-size: 20px; padding: 15px; display: block; }
+            .nav-links a:hover { color: var(--primary) !important; }
+
+            /* Fixing the Messy Layouts */
+            .hero { flex-direction: column; text-align: center; padding: 120px 5% 60px; min-height: auto; }
             .hero-content { max-width: 100%; margin-bottom: 40px; align-items: center; }
+            .hero h1 { font-size: 38px; }
             .hero-features { justify-content: center; }
             .btn-big { align-self: center !important; margin: 0 auto !important; }
-            .quick-donate { width: 100%; }
-            .stats-grid, .steps-container, .form-row, .payment-methods, .cases-grid, .trust-grid, .trust-features, .testi-grid, .vol-grid, .mem-main-grid { grid-template-columns: 1fr; }
+            
+            /* Quick Donate Box Fixes */
+            .quick-donate { width: 100%; padding: 25px 20px; box-sizing: border-box; }
+            .amount-grid { grid-template-columns: 1fr 1fr; } /* 2 columns instead of 4 */
+            
+            /* General Grid Fixes */
+            .trust-grid { zoom: 1; } /* Removes the 1.1 zoom that breaks mobile */
+            .stats-grid, .steps-container, .form-row, .payment-methods, .cases-grid, .trust-grid, .trust-features, .testi-grid, .vol-grid, .mem-main-grid { grid-template-columns: 1fr; gap: 20px; }
             .steps-container { flex-direction: column; align-items: center; gap: 40px; }
             .step-line { display: none; }
-            .nav-links { display: none; }
+            
             .mem-header h2 { font-size: 32px; }
             .mem-details-box { grid-row: 2; }
             .mem-pricing-container { grid-row: 1; }
@@ -436,17 +473,23 @@
                 <img src="logo.png" alt="GivingHub Logo" style="width: 32px; height: 32px; margin-left: 8px;"> <span dir="ltr">GivingHub</span>
             </a>
         </div>
-        <ul class="nav-links">
+        
+        <ul class="nav-links" id="nav-links">
             <li><a href="Index.html" style="color: var(--primary);">الرئيسية</a></li>
             <li><a href="campaigns.html">الحملات</a></li>
             <li><a href="#donate">تبرع الآن</a></li>
             <li><a href="map.html">الخريطة</a></li>
             <li><a href="ads.html">إعلانات</a></li>
         </ul>
-        <div class="nav-actions">
+        
+        <div class="nav-actions desktop-only">
             <button class="btn-outline">تسجيل الدخول</button>
             <a href="#donate" class="btn-primary">تبرع الآن</a>
         </div>
+
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
     </nav>
 
     <section class="hero">
@@ -1412,6 +1455,42 @@
             document.getElementById('toggle-monthly').classList.remove('active');
             document.getElementById('card-yearly').style.display = 'flex';
             document.getElementById('card-monthly').style.display = 'none';
+        });
+
+        // Mobile Burger Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-links');
+        
+        mobileBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            
+            // Switch icon between bars and X
+            const icon = mobileBtn.querySelector('i');
+            if(navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+                // Change color to dark when menu is open over white background
+                icon.style.color = 'var(--text-dark)'; 
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+                // Reset color to match the nav background state
+                const nav = document.querySelector('nav');
+                icon.style.color = nav.classList.contains('white-nav') ? 'var(--text-dark)' : 'var(--white)';
+            }
+        });
+
+        // Close menu automatically when clicking any link inside it
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = mobileBtn.querySelector('i');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+                
+                const nav = document.querySelector('nav');
+                icon.style.color = nav.classList.contains('white-nav') ? 'var(--text-dark)' : 'var(--white)';
+            });
         });
 
         // Interactive Quiz Script
