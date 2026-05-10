@@ -29,11 +29,13 @@
       --radius:16px;
       --shadow:0 2px 16px rgba(0,0,0,0.07);
       --white: #FFFFFF;
+      --text-dark: #292524;
     }
-    body{font-family:'Cairo',sans-serif;background:#FAFAFA;color:var(--gray-800);direction:rtl;min-height:100vh}
+    body{font-family:'Cairo',sans-serif;background:#FAFAFA;color:var(--gray-800);direction:rtl;min-height:100vh; overflow-x: hidden;}
 
     /* ─── NAVBAR ─── */
     nav{background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;border-bottom:1px solid var(--gray-200);position:sticky;top:0;z-index:2000}
+    .logo { display: flex; align-items: center; }
     .nav-logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.25rem;color:var(--gray-800);text-decoration:none}
     .nav-logo img{width:32px;height:32px;border-radius:50%;object-fit:cover}
     .nav-links{display:flex;align-items:center;gap:28px;list-style:none}
@@ -45,6 +47,10 @@
     .btn-login:hover{border-color:var(--orange);color:var(--orange)}
     .btn-donate{background:var(--orange);color:#fff;border:none;padding:8px 20px;border-radius:50px;font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:background .2s; text-decoration:none; display:inline-block; text-align:center;}
     .btn-donate:hover{background:var(--orange-hover)}
+
+    /* Mobile Menu Button Styles */
+    .mobile-menu-btn { display: none; background: transparent; border: none; color: var(--gray-800); font-size: 28px; cursor: pointer; z-index: 1002; transition: 0.3s; }
+    .desktop-only { display: flex; }
 
     /* ─── PAGE HEADER ─── */
     .page-header {
@@ -238,6 +244,7 @@
       display: flex;
       gap: 8px;
       margin-bottom: 10px;
+      flex-wrap: wrap;
     }
 
     .tag {
@@ -382,33 +389,74 @@
     .footer-bottom { border-top: 1px solid #292524; padding-top: 20px; text-align: center; font-size: 14px; max-width: 1100px; margin-left: auto; margin-right: auto; display: block; }
     .footer-bottom p { color: #A8A29E; margin: 0; }
 
+    /* ─── RESPONSIVE STYLES ─── */
     @media (max-width: 900px) {
-      .map-main-grid { grid-template-columns: 1fr; height: auto; }
-      .map-panel { height: 400px; }
-      .cards-container { max-height: 500px; }
-      .map-controls { flex-direction: column-reverse; gap: 15px; align-items: stretch; }
-      .search-box { width: 100%; }
-      .footer-grid { grid-template-columns: 1fr; }
+      .desktop-only { display: none !important; }
+      .mobile-menu-btn { display: block; }
+      
+      nav { padding: 0 20px; }
+
+      /* The Sliding Burger Menu */
+      .nav-links {
+          position: fixed;
+          top: 0;
+          right: -100%; /* Hidden off-screen by default */
+          width: 280px;
+          height: 100vh;
+          background: var(--white);
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          transition: right 0.4s ease;
+          box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+          margin: 0;
+          padding: 0;
+      }
+      .nav-links.active { right: 0; /* Slides in when active */ }
+      .nav-links a { color: var(--text-dark) !important; font-size: 20px; padding: 15px; display: block; }
+      .nav-links a:hover, .nav-links a.active { color: var(--orange) !important; }
+
+      /* Map and Layout Mobile Fixes */
+      .map-main-grid { display: flex; flex-direction: column; height: auto; }
+      /* Force the map to appear ABOVE the list on mobile */
+      .map-panel { height: 400px; order: -1; margin-bottom: 20px; } 
+      
+      .cards-container { max-height: none; overflow: visible; padding-left: 0; }
+      .map-controls { flex-direction: column; gap: 15px; align-items: stretch; margin-bottom: 15px; }
+      .filters { flex-wrap: wrap; justify-content: center; }
+      .search-box { width: 100%; box-sizing: border-box; }
+      
+      /* Footer Mobile Fixes */
+      .footer-grid { grid-template-columns: 1fr; text-align: center; }
+      .footer-logo { justify-content: center; }
+      .footer-social-links { justify-content: center !important; }
+      .footer-contact .fc-item { justify-content: center; text-align: center; flex-direction: column; align-items: center; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a class="nav-logo" href="index.html">
-    <img src="logo.png" alt="GivingHub Logo" style="width: 32px; height: 32px; margin-left: 8px;"> <span dir="ltr">GivingHub</span>
-  </a>
-  <ul class="nav-links">
+  <div class="logo">
+    <a class="nav-logo" href="index.html">
+      <img src="logo.png" alt="GivingHub Logo" style="width: 32px; height: 32px; margin-left: 8px;"> <span dir="ltr">GivingHub</span>
+    </a>
+  </div>
+  <ul class="nav-links" id="nav-links">
     <li><a href="index.html">الرئيسية</a></li>
     <li><a href="campaigns.html">الحملات</a></li>
     <li><a href="index.html#donate">تبرع الآن</a></li>
     <li><a href="map.html" class="active">الخريطة</a></li>
     <li><a href="ads.html">إعلانات</a></li>
   </ul>
-  <div class="nav-actions">
+  <div class="nav-actions desktop-only">
     <button class="btn-login">تسجيل الدخول</button>
     <a href="index.html#donate" class="btn-donate">تبرع الآن</a>
   </div>
+  
+  <button class="mobile-menu-btn" id="mobile-menu-btn">
+    <i class="fa-solid fa-bars"></i>
+  </button>
 </nav>
 
 <div class="page-header">
@@ -621,7 +669,7 @@
                 <img src="logo.png" alt="GivingHub Logo" style="width: 28px; height: 28px; margin-left: 8px;"> <span dir="ltr">GivingHub</span>
             </div>
             <p style="font-size: 14px; line-height: 1.8; margin-bottom: 20px;">مبادرة إنسانية مسجلة لدعم الطفولة في المغرب. نعمل على توفير الملبس والغذاء والتعليم لأطفال دور الرعاية.</p>
-            <div style="display: flex; gap: 15px;">
+            <div class="footer-social-links" style="display: flex; gap: 15px;">
                 <a href="#" style="font-size: 20px; color: #A8A29E;"><i class="fa-brands fa-facebook"></i></a>
                 <a href="#" style="font-size: 20px; color: #A8A29E;"><i class="fa-brands fa-instagram"></i></a>
                 <a href="#" style="font-size: 20px; color: #A8A29E;"><i class="fa-brands fa-twitter"></i></a>
@@ -703,6 +751,34 @@
       L.marker([data.lat, data.lng], {
           icon: createCustomMarker(data.color, data.icon)
       }).addTo(map);
+  });
+
+  // ─── Mobile Burger Menu Toggle Logic ───
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const navLinks = document.getElementById('nav-links');
+  
+  mobileBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      
+      // Switch icon between bars and X
+      const icon = mobileBtn.querySelector('i');
+      if(navLinks.classList.contains('active')) {
+          icon.classList.remove('fa-bars');
+          icon.classList.add('fa-xmark');
+      } else {
+          icon.classList.remove('fa-xmark');
+          icon.classList.add('fa-bars');
+      }
+  });
+
+  // Close menu automatically when clicking any link inside it
+  navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+          const icon = mobileBtn.querySelector('i');
+          icon.classList.remove('fa-xmark');
+          icon.classList.add('fa-bars');
+      });
   });
 </script>
 </body>
